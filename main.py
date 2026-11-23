@@ -9,6 +9,8 @@ Standard library only, deterministic: the same line is written on every run.
 
 import os
 
+MAX_CHARS = 200
+
 ENTRY = (
     "My agent watched its own poller die silently every five minutes "
     "for three hours and logged 'all healthy' after every restart."
@@ -20,8 +22,10 @@ def validate(text):
     if not isinstance(text, str):
         raise ValueError("entry must be a string")
     text.encode("utf-8")  # must be valid UTF-8
-    if not 1 <= len(text) <= 200:
-        raise ValueError("entry must be 1-200 characters, got %d" % len(text))
+    if not 1 <= len(text) <= MAX_CHARS:
+        raise ValueError(
+            "entry must be 1-%d characters, got %d" % (MAX_CHARS, len(text))
+        )
     if not text.strip():
         raise ValueError("entry must not be only whitespace")
     if "\n" in text or "\r" in text:
